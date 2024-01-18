@@ -1,5 +1,3 @@
-version: '3.1'
-
 services:
   trip:
     image: postgres:16.1
@@ -11,5 +9,6 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/database.sql:/docker-entrypoint-initdb.d/database.sql
     ports:
       - 5433:5432
