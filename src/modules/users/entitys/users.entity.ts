@@ -1,10 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Unique } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Unique, OneToMany } from 'typeorm';
+import { Cards } from '../../cards/cards.entity';
+import { Trip } from '../../trips/entitys/trips.entity';
+import { RolesByUser } from './rolesbyuser.entity';
 
 @Entity('User')
 @Unique(['email', 'phone_number'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: number;
 
   @Column({ unique: true, nullable: false })
   email: string;
@@ -29,4 +32,17 @@ export class User {
 
   @Column({ default: true })
   status: boolean;
+
+  @OneToMany(() => Cards, card => card.user)
+  cards: Cards[];
+
+  @OneToMany(() => Trip, (trip) => trip.passenger)
+  tripsAsPassenger: Trip[];
+
+  @OneToMany(() => Trip, (trip) => trip.passenger)
+  tripsAsDriver: Trip[];
+
+  @OneToMany(() => RolesByUser, (rolesByUser) => rolesByUser.user)
+  roles: RolesByUser[];
+
 }

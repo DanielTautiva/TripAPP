@@ -8,12 +8,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import config from 'config';
-import { User } from '../users/users.entity';
 
 /**
  * Entitys
  */
 
+import { User } from '../users/entitys/users.entity';
+import { Cards } from '../cards/cards.entity';
+import { Trip } from '../trips/entitys/trips.entity';
+import { TripStatus } from '../trips/entitys/tripstatus.entity';
+import { Roles } from '../users/entitys/roles.entity';
+import { RolesByUser } from '../users/entitys/rolesbyuser.entity';
+import { Transaction } from '../transactions/transactions.entity';
 
 @Global()
 @Module({
@@ -36,10 +42,20 @@ import { User } from '../users/users.entity';
           password,
           synchronize: false,
           entities: [
-            User
+            User,
+            Cards,
+            Trip,
+            TripStatus,
+            Roles,
+            RolesByUser,
+            Transaction
           ],
+          migrationsRun: true,
+          migrations: ["src/database/migrations/*{.ts,.js}"],
+          cli: {
+            migrationsDir: "src/database/migrations"
+          },
           autoLoadEntities: false,
-          requestTimeout: 13000000,
           logging: false,
           extra: {
             trustServerCertificate: true,

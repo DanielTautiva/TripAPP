@@ -1,9 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { exceptionHandling } from 'src/common/exceptionHandling';
-import { User } from '../users/users.entity';
-
 
 @Injectable()
 export class AuthService {
@@ -37,9 +34,9 @@ export class AuthService {
 
   }
 
-  private generateToken(userId: string, userEmail: string): { token: string } {
+  private generateToken(userId: number, userEmail: string): { token: string } {
     // Genera el token JWT utilizando el JwtService
-    const payload = { sub: userId, email: userEmail };
+    const payload = { id: userId, email: userEmail };
     const token: string = this.jwtService.sign(payload);
     return { token };
   }

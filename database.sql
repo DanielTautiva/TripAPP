@@ -1,72 +1,67 @@
 CREATE TABLE "User" (
-  "id" UUID PRIMARY KEY,
-  "email" Text UNIQUE NOT NULL,
-  "fullname" Text,
-  "phone_number" text UNIQUE NOT NULL,
-  "photo" Text,
-  "password" Text,
-  "created_at" Timestamp(3) DEFAULT (CURRENT_TIMESTAMP),
-  "updated_at" Timestamp(3),
-  "status" Boolean
+  "id" SERIAL PRIMARY KEY,
+  "email" TEXT UNIQUE NOT NULL,
+  "fullname" TEXT,
+  "phone_number" TEXT UNIQUE NOT NULL,
+  "photo" TEXT,
+  "password" TEXT,
+  "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP(3),
+  "status" BOOLEAN
 );
 
 CREATE TABLE "Cards" (
-  "id_card" UUID PRIMARY KEY,
-  "id_user" int,
-  "token" text NOT NULL
-);
-
-CREATE TABLE "Trip" (
-  "id" UUID PRIMARY KEY,
-  "id_user" int,
-  "id_driver" int,
-  "start_location" text,
-  "end_location" text,
-  "created_at" Timestamp(3) DEFAULT (CURRENT_TIMESTAMP),
-  "complete_at" Timestamp(3),
-  "status" int DEFAULT 1
+  "id_card" SERIAL PRIMARY KEY,
+  "id_user" INT,
+  "token" TEXT NOT NULL,
+  FOREIGN KEY ("id_user") REFERENCES "User" ("id")
 );
 
 CREATE TABLE "TripStatus" (
-  "id" UUID PRIMARY KEY,
-  "name" text,
-  "created_at" Timestamp(3) DEFAULT (CURRENT_TIMESTAMP),
-  "updated_at" Timestamp(3)
+  "id" SERIAL PRIMARY KEY,
+  "name" TEXT,
+  "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP(3)
+);
+
+CREATE TABLE "Trip" (
+  "id" SERIAL PRIMARY KEY,
+  "id_user" INT,
+  "id_driver" INT,
+  "start_location" TEXT,
+  "end_location" TEXT,
+  "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+  "complete_at" TIMESTAMP(3),
+  "status" INT DEFAULT 1,
+  FOREIGN KEY ("id_user") REFERENCES "User" ("id"),
+  FOREIGN KEY ("id_driver") REFERENCES "User" ("id"),
+  FOREIGN KEY ("status") REFERENCES "TripStatus" ("id")
 );
 
 CREATE TABLE "Transaction" (
-  "id" UUID PRIMARY KEY,
-  "id_trip" int,
-  "id_wompi" Text UNIQUE NOT NULL,
-  "reference" Text UNIQUE NOT NULL,
-  "total_amount" Double,
-  "created_at" Timestamp(3) DEFAULT (CURRENT_TIMESTAMP),
-  "updated_at" Timestamp(3)
-);
-
-CREATE TABLE "RolesByUser" (
-  "id" UUID PRIMARY KEY,
-  "id_user" int,
-  "id_role" int
+  "id" SERIAL PRIMARY KEY,
+  "id_trip" INT,
+  "id_wompi" TEXT UNIQUE NOT NULL,
+  "reference" TEXT UNIQUE NOT NULL,
+  "total_amount" DOUBLE PRECISION,
+  "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP(3),
+  FOREIGN KEY ("id_trip") REFERENCES "Trip" ("id")
 );
 
 CREATE TABLE "Roles" (
-  "id" UUID PRIMARY KEY,
-  "name" text,
-  "created_at" Timestamp(3) DEFAULT (CURRENT_TIMESTAMP),
-  "updated_at" Timestamp(3)
+  "id" SERIAL PRIMARY KEY,
+  "name" TEXT,
+  "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP(3)
 );
 
-ALTER TABLE "Cards" ADD FOREIGN KEY ("id_user") REFERENCES "User" ("id");
+CREATE TABLE "RolesByUser" (
+  "id" SERIAL PRIMARY KEY,
+  "id_user" INT,
+  "id_role" INT,
+  FOREIGN KEY ("id_user") REFERENCES "User" ("id"),
+  FOREIGN KEY ("id_role") REFERENCES "Roles" ("id")
+);
 
-ALTER TABLE "Trip" ADD FOREIGN KEY ("id_user") REFERENCES "User" ("id");
 
-ALTER TABLE "Trip" ADD FOREIGN KEY ("id_driver") REFERENCES "User" ("id");
-
-ALTER TABLE "Trip" ADD FOREIGN KEY ("status") REFERENCES "TripStatus" ("id");
-
-ALTER TABLE "Transaction" ADD FOREIGN KEY ("id_trip") REFERENCES "Trip" ("id");
-
-ALTER TABLE "RolesByUser" ADD FOREIGN KEY ("id_user") REFERENCES "User" ("id");
-
-ALTER TABLE "RolesByUser" ADD FOREIGN KEY ("id_role") REFERENCES "Roles" ("id");
