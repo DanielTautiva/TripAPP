@@ -11,5 +11,6 @@ services:
       POSTGRES_PASSWORD: 12345
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/database.sql:/docker-entrypoint-initdb.d/database.sql
     ports:
       - 5433:5432
