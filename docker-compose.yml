@@ -1,16 +1,15 @@
 version: '3.1'
 
 services:
-  codrr_pg:
+  trip:
     image: postgres:16.1
-    container_name: codrr_pg
+    container_name: trip
     restart: always
     environment:
       POSTGRES_DB: TripAPP
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_PASSWORD: postgres
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./db/database.sql:/docker-entrypoint-initdb.d/database.sql
     ports:
       - 5433:5432
