@@ -90,8 +90,11 @@ export class UsersService {
           return user;
         }
       }
+
+      exceptionHandler(`Password incorrect.`);
+
     }catch(error){
-      return exceptionHandler(`Authentication failed.`, error);
+       exceptionHandler(`Authentication failed.`, error);
     }
   }
 

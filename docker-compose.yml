@@ -4,7 +4,7 @@ services:
     container_name: trip
     restart: always
     environment:
-      POSTGRES_DB: TripAPP
+      POSTGRES_DB: TripApp
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
