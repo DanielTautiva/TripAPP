@@ -22,24 +22,21 @@ async function bootstrap() {
 
   app.use(helmet());
   app.use(compression());
+  app.enableCors();
+  app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
     .setTitle('TRIP API Documentation')
     .setDescription('The TRIP API description')
     .setVersion('1.0')
-    .addServer('/api')
     .addTag('TRIP')
   .build();
   
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  app.enableCors();
-  app.setGlobalPrefix('api');
-
-
   await app.listen(process.env.APP_PORT, () => {
-    Logger.debug('Env in ' + process.env.ENV);
+    Logger.debug(`Application running on: ${process.env.APP_PORT} Env in: ${process.env.ENV}`);
   });
 
 }
