@@ -43,6 +43,9 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+### Collection postman
+Don't forget to import [project.postman_collection.json] for testing.
+
 ## Deploy
 
 The [W] API has been deployed on Amazon Web Services (AWS) using an EC2 instance with Ubuntu. Please note that, due to being a free-tier instance, it does not have an SSL certificate. You can access the API through this link.
