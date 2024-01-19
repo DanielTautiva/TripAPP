@@ -29,6 +29,12 @@ export class TripsService {
         this.token = this.jwt.verify(authorization.split(' ')[1]);
     }
 
+    /**
+     * Requests a new trip assigning an available driver to the specified passenger.
+     * @param createTripDto Data for the requested trip.
+     * @returns Object representing the newly created trip.
+     * @throws NotFoundException if the passenger is not found or no drivers are available.
+     */
     async requestTrip(createTripDto: CreateTripDto): Promise<Trip> {
 
         const passenger = await this.usersService.findByEmail(createTripDto.email);
@@ -57,6 +63,10 @@ export class TripsService {
 
     }
 
+    /**
+     * Finds and returns a random available driver among the registered drivers.
+     * @returns Object representing the available driver or undefined if no drivers are available.
+     */
     async findAvailableDriver(): Promise<User | undefined> {
         const drivers = await this.usersService.findDrivers();
 
@@ -68,9 +78,14 @@ export class TripsService {
         return drivers[randomIndex];
     }
 
-    async completeTrip(completeTripDto: CompleteTripDto): Promise<Trip> {
+    /**
+     * Completes a registered trip, calculates the total fare, and updates the trip status.
+     * @param completeTripDto Data for completing the trip.
+     * @returns Object representing the completed trip with the calculated fare.
+     * @throws NotFoundException if the trip is not found or not authorized to be updated.
+     */
 
-        console.log(this.token);
+    async completeTrip(completeTripDto: CompleteTripDto): Promise<Trip> {
 
         let trip = await this.tripRepository.findOne({where: {id: completeTripDto.id}});
 

@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { CreatePaymentSourceDto, CreateTransactionDto } from './transactions.dtos';
+import { CreatePaymentGateWayDto, CreatePaymentSourceDto, CreateTransactionDto } from './transactions.dtos';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -25,7 +25,7 @@ export class TransactionsController {
 
 
   @Post('pay-gateway')
-  async createPaymentgateway(@Body() body: CreateTransactionDto): Promise<any> {
+  async createPaymentgateway(@Body() body: CreatePaymentGateWayDto): Promise<any> {
   
     const result = await this.transactionsService.createPaymentgateway(body);
     return result;

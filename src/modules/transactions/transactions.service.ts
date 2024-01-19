@@ -6,7 +6,7 @@ import { Transaction } from './transactions.entity';
 import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
 import { exceptionHandler } from 'src/common/exception.handler';
-import { CreatePaymentSourceDto, CreateTransactionDto } from './transactions.dtos';
+import { CreatePaymentGateWayDto, CreatePaymentSourceDto, CreateTransactionDto } from './transactions.dtos';
 import { generateUniqueReference } from 'src/common/generate.reference';
 import * as crypto from 'crypto';
 import { generateRandomCard } from 'src/common/random.card';
@@ -158,7 +158,7 @@ export class TransactionsService {
     }
 
 
-    async createPaymentgateway(body: CreateTransactionDto): Promise<any> {
+    async createPaymentgateway(body: CreatePaymentGateWayDto): Promise<any> {
 
         // Token de aceptacion
         const acceptanceToken: string = await this.getPresignedAcceptanceToken();
@@ -172,11 +172,11 @@ export class TransactionsService {
             customer_email: body.email
         }); 
 
-
+        let totalAmount: number = parseInt(body.priceTotal) ;
         // Payload transaction
         let data = {
             acceptance_token: acceptanceToken, //Token de aceptacion
-            amount_in_cents: (body.totalAmount * 100), //Monto current centavos
+            amount_in_cents: (totalAmount * 100), //Monto current centavos
             currency: "COP", 
             customer_email: body.email, // Email del usuario
             payment_method: {

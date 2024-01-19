@@ -33,3 +33,36 @@ export class CreateTransactionDto {
     readonly totalAmount: number;
 
 }
+
+export class CreatePaymentGateWayDto {
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    readonly email: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    readonly cardOwner : string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    readonly cardNumber : string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    readonly expiryDate : string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly priceTotal  : string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    readonly cardType  : string;
+}
