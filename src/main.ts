@@ -5,6 +5,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import * as compression from 'compression';
+import * as csurf from 'csurf';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   
@@ -20,7 +22,21 @@ async function bootstrap() {
 
   app.use(helmet());
   app.use(compression());
-  app.enableCors();
+  app.enableCors({ origin: '*' });
+  app.use(cookieParser());
+
+  app.use(
+    csurf({
+      cookie: {
+        httpOnly: true,
+        sameSite: true,
+        secure: true,
+        key: 'authorization',
+      },
+      ignoreMethods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
+    }),
+  );
+
   app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
