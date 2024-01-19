@@ -3,8 +3,6 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger, ValidationPipe } from '@nestjs/common';
-
-
 import helmet from 'helmet';
 import * as compression from 'compression';
 
@@ -14,9 +12,9 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true, // Auto-transformar solicitudes a DTOs
-      whitelist: true, // Eliminar propiedades adicionales de DTOs
-      forbidNonWhitelisted: true, // Lanzar error si hay propiedades no permitidas
+      transform: true, 
+      whitelist: true, 
+      forbidNonWhitelisted: true, 
     }),
   ); 
 
