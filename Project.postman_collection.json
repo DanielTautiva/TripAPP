@@ -1,0 +1,551 @@
+{
+	"info": {
+		"_postman_id": "0f1cc918-1047-4e5d-937c-df26569e8aad",
+		"name": "Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24964056",
+		"_collection_link": "https://red-station-939505.postman.co/workspace/My-Workspace~1f49f0ae-9872-474a-86d6-8c23293c46aa/collection/22933742-0f1cc918-1047-4e5d-937c-df26569e8aad?action=share&source=collection_link&creator=24964056"
+	},
+	"item": [
+		{
+			"name": "Wompi (PRUEBAS)",
+			"item": [
+				{
+					"name": "Wompi acceptance_token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"number\": \"4242424242424242\", // Número de tarjeta (como un string, sin espacios)\r\n  \"exp_month\": \"06\", // Mes de expiración (como string de 2 dígitos)\r\n  \"exp_year\": \"29\", // Año de expiración (como string de 2 dígitos)\r\n  \"cvc\": \"123\", // Código de seguridad (como string de 3 o 4 dígitos)\r\n  \"card_holder\": \"Pedro Pérez\" // Nombre del tarjeta habiente (string de mínimo 5 caracteres)\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sandbox.wompi.co/v1/merchants/pub_test_mIquh7WDLnoX4dHehMiy69afW2y8xCwg",
+							"protocol": "https",
+							"host": [
+								"sandbox",
+								"wompi",
+								"co"
+							],
+							"path": [
+								"v1",
+								"merchants",
+								"pub_test_mIquh7WDLnoX4dHehMiy69afW2y8xCwg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wompi Tokenizador",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "pub_test_mIquh7WDLnoX4dHehMiy69afW2y8xCwg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"user@example.com\",\r\n  \"number\": \"4242424242424242\",\r\n  \"exp_month\": \"12\",\r\n  \"exp_year\": \"25\",\r\n  \"cvc\": \"123\",\r\n  \"card_holder\": \"John Doe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sandbox.wompi.co/v1/tokens/cards",
+							"protocol": "https",
+							"host": [
+								"sandbox",
+								"wompi",
+								"co"
+							],
+							"path": [
+								"v1",
+								"tokens",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wompi Fuente de Pago",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "prv_test_RSa5E133NkcOaE2eP5mEB0NgNzpieC5i",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"type\": \"CARD\",\r\n  \"token\": \"tok_test_90709_eCE81aee64Fd4dff97a0B0fb9a389af1\",\r\n  \"customer_email\": \"dani@example.com\",\r\n  \"acceptance_token\": \"eyJhbGciOiJIUzI1NiJ9.eyJjb250cmFjdF9pZCI6MTQyLCJwZXJtYWxpbmsiOiJodHRwczovL3dvbXBpLmNvbS9hc3NldHMvZG93bmxvYWRibGUvcmVnbGFtZW50by1Vc3Vhcmlvcy1Db2xvbWJpYS5wZGYiLCJmaWxlX2hhc2giOiJlZjAzZDVlZTZiM2YxNWMzY2Q0MDJkN2MxZDgwZTJmYyIsImppdCI6IjE3MDU0NTk4MjUtNzE3NTAiLCJlbWFpbCI6IiIsImV4cCI6MTcwNTQ2MzQyNX0.RpMu-7RXHYfObZJXoA13YweLYSeYUez6K6TGxetnECo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sandbox.wompi.co/v1/payment_sources",
+							"protocol": "https",
+							"host": [
+								"sandbox",
+								"wompi",
+								"co"
+							],
+							"path": [
+								"v1",
+								"payment_sources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wompi Transactions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "prv_test_RSa5E133NkcOaE2eP5mEB0NgNzpieC5i",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"acceptance_token\": \"eyJhbGciOiJIUzI1NiJ9.eyJjb250cmFjdF9pZCI6MTQyLCJwZXJtYWxpbmsiOiJodHRwczovL3dvbXBpLmNvbS9hc3NldHMvZG93bmxvYWRibGUvcmVnbGFtZW50by1Vc3Vhcmlvcy1Db2xvbWJpYS5wZGYiLCJmaWxlX2hhc2giOiJlZjAzZDVlZTZiM2YxNWMzY2Q0MDJkN2MxZDgwZTJmYyIsImppdCI6IjE3MDU0NjY0MzQtOTk5MTIiLCJlbWFpbCI6IiIsImV4cCI6MTcwNTQ3MDAzNH0.7JnnYCulkI096EHVnrFNwvbsC0-Q1UfIweSIfuW1gl0\",\r\n    \"amount_in_cents\": 4697300,\r\n    \"payment_method\": { \"installments\": 1 },\r\n    \"currency\": \"COP\",\r\n    \"customer_email\": \"user@example.com\",\r\n    \"reference\": \"1705464841813_l6orsa\",\r\n    \"payment_source_id\": 97431\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sandbox.wompi.co/v1/transactions",
+							"protocol": "https",
+							"host": [
+								"sandbox",
+								"wompi",
+								"co"
+							],
+							"path": [
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"july@example.com\",\r\n  \"fullname\": \"July Daza\",\r\n  \"phone_number\": \"+57 3013412329\",\r\n  \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_PRO}}/api/auth/signup",
+							"host": [
+								"{{URL_PRO}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						},
+						"description": "Pruebas"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json = JSON.parse(responseBody)\r",
+									"\r",
+									"pm.environment.set(\"TOKEN\",json.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"july@example.com\",\r\n    \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_PRO}}/api/auth/login",
+							"host": [
+								"{{URL_PRO}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cards",
+			"item": [
+				{
+					"name": "Tokenizador",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"july@example.com\",\r\n  \"number\": \"4242424242424242\",\r\n  \"exp_month\": \"12\",\r\n  \"exp_year\": \"25\",\r\n  \"cvc\": \"123\",\r\n  \"card_holder\": \"John Doe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/cards/tokenizador",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"cards",
+								"tokenizador"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cards By User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"july@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/cards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Trips",
+			"item": [
+				{
+					"name": "Solicit Trip",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"july@example.com\",\r\n  \"current_latitude\": \"4.6266686\",\r\n  \"current_longitude\": \"-74.1625781\",\r\n  \"destine_latitude\": \"4.629737547395592\",\r\n  \"destine_longitude\": \"-74.13502282940719\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/trips/request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"trips",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Trip",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/trips/complete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"trips",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Create Payment Source",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImlhdCI6MTcwNTQ0NDY4NSwiZXhwIjoxNzA1NDczNDg1fQ.YTVMpA5iXlOzqqcIpRGDjOKpe_OXUTH1zmkSJs26hKk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"type\": \"CARD\",\r\n  \"customer_email\": \"user@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/transactions/create-payment-source",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"transactions",
+								"create-payment-source"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pay Transaction",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"july@example.com\",\r\n  \"idTrip\": 1,\r\n  \"totalAmount\": 6573\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/transactions/pay",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"transactions",
+								"pay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pay Gateway (ONLY FRONTEND)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cardOwner\": \"adsadsadasd\",\r\n    \"cardNumber\": \"2321-3123-2131-2312\",\r\n    \"expiryDate\": \"01/23\",\r\n    \"email\": \"julydaza@example.com\",\r\n    \"priceTotal\": 668500,\r\n    \"cardType\": \"Mastercard\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ec2-54-221-103-90.compute-1.amazonaws.com/api/transactions/pay-gateway",
+							"protocol": "http",
+							"host": [
+								"ec2-54-221-103-90",
+								"compute-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"api",
+								"transactions",
+								"pay-gateway"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
