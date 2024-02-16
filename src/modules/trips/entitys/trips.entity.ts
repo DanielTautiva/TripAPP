@@ -7,11 +7,10 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
-  BeforeInsert,
-  OneToMany,
+  BeforeInsert
 } from 'typeorm';
-import { User } from 'src/modules/users/entitys/users.entity'; 
 import { TripStatus } from './tripstatus.entity'; 
+import { User } from 'src/modules/users/entitys/users.entity';
 import { Transaction } from 'src/modules/transactions/transactions.entity';
 
 @Entity('Trip')

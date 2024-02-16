@@ -35,4 +35,9 @@ export class CompleteTripDto {
     @IsNumber()
     id: number;
 
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    token: string;
+
 }

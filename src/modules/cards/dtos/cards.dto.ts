@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsInt, IsNotEmpty, IsNumber, IsObject, IsString, ValidateNested } from 'class-validator';
 
 export class CreateCardDto {
 
@@ -42,3 +43,41 @@ export class CreateCardDto {
     @IsString()
     readonly email: string;
   }
+
+  class cardRes {
+      @ApiProperty()
+      @IsNumber()
+      id_user: number;
+      
+      @ApiProperty()
+      @IsString()
+      token: string;
+      
+      @ApiProperty()
+      @IsNumber()
+      id_card: number;
+  }
+
+  export class DtoResCards{
+
+    @ApiProperty()
+    @IsString()
+    readonly message: string;
+    
+    @ApiProperty()
+    @IsArray()
+    readonly cards:cardRes[]
+  }
+
+  export class DtoResTokenizador {
+    @ApiProperty()
+    @IsString()
+    readonly message: string;
+    
+    @ApiProperty()
+    @IsObject()
+    @Type(() => cardRes)
+    readonly card:cardRes
+  }
+
+ 

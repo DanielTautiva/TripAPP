@@ -22,11 +22,9 @@ export class TripsService {
         @InjectRepository(TripStatus)
         private readonly tripStatusRepository: Repository<TripStatus>,
         private readonly usersService: UsersService,
-        @Inject(REQUEST) private request: Request,
         public jwt: JwtService,
     ) {
-        const { authorization } = this.request.headers;
-        this.token = this.jwt.verify(authorization.split(' ')[1]);
+
     }
 
     /**
@@ -35,7 +33,7 @@ export class TripsService {
      * @returns Object representing the newly created trip.
      * @throws NotFoundException if the passenger is not found or no drivers are available.
      */
-    async requestTrip(createTripDto: CreateTripDto): Promise<Trip> {
+    async requestTrip(createTripDto: CreateTripDto): Promise<{ message: string, trip: Trip}> {
 
         const passenger = await this.usersService.findByEmail(createTripDto.email);
 
@@ -59,7 +57,10 @@ export class TripsService {
         });
 
         // Guarda el nuevo viaje en la base de datos
-        return this.tripRepository.save(trip);
+        return {
+            message: "Conductor asignado con exito!",
+            trip: await this.tripRepository.save(trip)
+        };
 
     }
 
@@ -85,13 +86,15 @@ export class TripsService {
      * @throws NotFoundException if the trip is not found or not authorized to be updated.
      */
 
-    async completeTrip(completeTripDto: CompleteTripDto): Promise<Trip> {
+    async completeTrip(completeTripDto: CompleteTripDto): Promise<{ message: string, trip: Trip}> {
 
         let trip = await this.tripRepository.findOne({where: {id: completeTripDto.id}});
 
         if (!trip) {
         throw new NotFoundException('Trip not found');
         }   
+
+        this.token = this.jwt.verify(completeTripDto.token);
 
         trip = await this.tripRepository
             .createQueryBuilder('trip')
@@ -129,7 +132,10 @@ export class TripsService {
         result.total_amount = totalAmount;
         result.format_amount = this.formatToColombianPesos(totalAmount);
 
-        return result;
+        return {
+            message: "Viaje finalizo con exito!",
+            trip: result
+        };
     }
 
     private calculateDistanceInKm(

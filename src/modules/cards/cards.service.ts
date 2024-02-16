@@ -9,7 +9,7 @@ import { UsersService } from '../users/users.service';
 import { CreateCardDto, GetCardDto } from './dtos/cards.dto';
 import { exceptionHandler } from 'src/common/exception.handler';
 import { ConfigService } from '@nestjs/config';
-;
+
 
 @Injectable()
 export class CardsService {
@@ -34,7 +34,7 @@ export class CardsService {
     const token = await this.createWompiCard(model);
 
     if(!token){
-        exceptionHandler("Error al crear tarjeta en Wompi")
+        exceptionHandler("Error al crear tarjeta en Wompi", {}, 400)
     }
     // Crear la tarjeta en la base de datos
     const newCard = this.cardsRepository.create({

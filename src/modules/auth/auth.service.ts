@@ -1,7 +1,6 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { exceptionHandler } from 'src/common/exception.handler';
 
 @Injectable()
 export class AuthService {
@@ -10,7 +9,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(email: string, password: string, fullname: string, phone_number: string): Promise<{ token: string }  | void> {
+
+  async signUp(email: string, password: string, fullname: string, phone_number: string): Promise<{ token: string }> {
 
     const user = await this.usersService.create(email, password, fullname, phone_number);
 
@@ -18,7 +18,7 @@ export class AuthService {
     return this.generateToken(user.id, user.email);
   }
 
-  async signIn(email: string, password: string): Promise<{ token: string }  | void> {
+  async signIn(email: string, password: string): Promise<{ token: string }> {
 
     try{
       // Implementa la lógica para autenticar al usuario
@@ -36,9 +36,13 @@ export class AuthService {
 
   }
 
-  private generateToken(userId: number, userEmail: string): { token: string } {
+  async verifyToken(token: string): Promise<any> {
+    return this.jwtService.verify(token);
+  }
+
+  public generateToken(userId: number, userEmail: string): { token: string } {
     // Genera el token JWT utilizando el JwtService
-    const payload = { id: userId, email: userEmail };
+    const payload = { email: userEmail };
     const token: string = this.jwtService.sign(payload);
     return { token };
   }

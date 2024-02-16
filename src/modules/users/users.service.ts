@@ -91,7 +91,7 @@ export class UsersService {
         }
       }
 
-      exceptionHandler(`Password incorrect.`);
+      exceptionHandler(`Password incorrect.`, {}, 400);
 
     }catch(error){
        exceptionHandler(`Authentication failed.`, error);

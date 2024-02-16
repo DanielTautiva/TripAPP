@@ -8,7 +8,6 @@ import { ConfigService } from '@nestjs/config';
 import { exceptionHandler } from 'src/common/exception.handler';
 import { CreatePaymentGateWayDto, CreatePaymentSourceDto, CreateTransactionDto } from './transactions.dtos';
 import { generateUniqueReference } from 'src/common/generate.reference';
-import * as crypto from 'crypto';
 import { generateRandomCard } from 'src/common/random.card';
 import { CardsService } from '../cards/cards.service';
 
@@ -17,7 +16,6 @@ export class TransactionsService {
 
     private readonly config: Record<string, string>;
     private wompiPublicKey: string;
-
 
     constructor(
       @InjectRepository(Transaction)
@@ -48,8 +46,8 @@ export class TransactionsService {
     }
 
 
-    async createPaymentSource(body: CreatePaymentSourceDto): Promise<number> {
-        
+    async createPaymentSource(body: CreatePaymentSourceDto): Promise<{message: string, id: number}> {
+
         const wompiEndpoint = `${this.config.api}/payment_sources`;
 
         const headers = {
@@ -71,11 +69,14 @@ export class TransactionsService {
         
             const wompiCardId = response.data.data.id ?? false
 
-            return wompiCardId;
+            return {
+                message: "Metodo de pago generado con exito!",
+                id: wompiCardId
+            };
         
         } catch (error) { 
 
-            exceptionHandler("Error al crear fuente de pago", error)
+            exceptionHandler("Error al crear fuente de pago", error, 404)
         }
     }
 
@@ -104,7 +105,7 @@ export class TransactionsService {
         const reference: string = await this.generateUniquePaymentReference();
 
         // Generar Id de la fuente de pago
-        const idSourcePayment: number = await this.createPaymentSource({
+        const idSourcePayment: any = await this.createPaymentSource({
             type: "CARD",
             customer_email: body.email
         }); 
@@ -120,7 +121,7 @@ export class TransactionsService {
               installments: 1 // Número de cuotas si la fuente de pago representa una tarjeta de lo contrario el campo payment_method puede ser ignorado.
             },
             reference: reference, // Referencia única de pago
-            payment_source_id: idSourcePayment // ID de la fuente de pago
+            payment_source_id: idSourcePayment.id // ID de la fuente de pago
         }
 
         const wompiEndpoint = `${this.config.api}/transactions`;
@@ -147,7 +148,12 @@ export class TransactionsService {
                 const transaction = this.transactionRepository.create(createTransaction);
             
                 // Guardar la transacción en la base de datos
-                return await this.transactionRepository.save(transaction);
+                return {
+                    message: "Pago generado con exito!",
+                    transaction: await this.transactionRepository.save(transaction)
+                };
+                
+                
             }
       
             exceptionHandler("No fue posible generar la transaccion")
@@ -157,50 +163,4 @@ export class TransactionsService {
         }
     }
 
-
-    async createPaymentgateway(body: CreatePaymentGateWayDto): Promise<any> {
-
-        // Token de aceptacion
-        const acceptanceToken: string = await this.getPresignedAcceptanceToken();
-
-        // Generar una Referencia única
-        const reference: string = await this.generateUniquePaymentReference();
-
-        // Generar Id de la fuente de pago
-        const idSourcePayment: number = await this.createPaymentSource({
-            type: "CARD",
-            customer_email: body.email
-        }); 
-
-        let totalAmount: number = parseInt(body.priceTotal) ;
-        // Payload transaction
-        let data = {
-            acceptance_token: acceptanceToken, //Token de aceptacion
-            amount_in_cents: (totalAmount * 100), //Monto current centavos
-            currency: "COP", 
-            customer_email: body.email, // Email del usuario
-            payment_method: {
-              installments: 1 // Número de cuotas si la fuente de pago representa una tarjeta de lo contrario el campo payment_method puede ser ignorado.
-            },
-            reference: reference, // Referencia única de pago
-            payment_source_id: idSourcePayment // ID de la fuente de pago
-        }
-
-        const wompiEndpoint = `${this.config.api}/transactions`;
-
-        const headers = {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.config.privateKey}`,
-        };
-
-        try {
-            
-            const response = await axios.post(wompiEndpoint, data, { headers });
-
-            return response.data.data;
-            
-        } catch (error) { 
-            exceptionHandler("Error al generar la transaccion", error)
-        }
-    }
 }

@@ -5,9 +5,14 @@ import { UsersService } from '../users/users.service';
 import { UsersModule } from '../users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Cards } from './cards.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports:[
+    JwtModule.register({
+      secret: process.env.SECRET_KEY,
+      signOptions: { expiresIn: process.env.EXPIRED_IN },
+    }),
     TypeOrmModule.forFeature(
       [
         Cards,
